@@ -23,6 +23,7 @@ class Process {
 
   // TODO: Declare any necessary private members
  private:
+   float cpu_util;
    int pid_;
    std::vector<float> Parse_CPU_Util(std::string directory);
    float Calc_Utilization(std::vector<float> test);
