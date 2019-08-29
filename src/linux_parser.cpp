@@ -108,17 +108,17 @@ long LinuxParser::UpTime(string directory) {
 }
 
 // TODO: Read and return the number of jiffies for the system
-long LinuxParser::Jiffies() { return 0; }
+//long LinuxParser::Jiffies() { return 0; }
 
 // TODO: Read and return the number of active jiffies for a PID
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
+//long LinuxParser::ActiveJiffies(int pid[[maybe_unused]]) { return 0; }
 
 // TODO: Read and return the number of active jiffies for the system
-long LinuxParser::ActiveJiffies() { return 0; }
+//long LinuxParser::ActiveJiffies() { return 0; }
 
 // TODO: Read and return the number of idle jiffies for the system
-long LinuxParser::IdleJiffies() { return 0; }
+//long LinuxParser::IdleJiffies() { return 0; }
 
 // TODO: Read and return CPU utilization
 vector<string> LinuxParser::CpuUtilization(string directory) {
@@ -185,6 +185,7 @@ string LinuxParser::Command(int pid) {
     std::getline(stream,line);
     return line;
   }
+  return "0";
 }
 
 // TODO: Read and return the memory used by a process
@@ -238,26 +239,21 @@ string LinuxParser::User(int pid) {
   string data;
   
   while(stream.is_open() && i < 50){
-    std::getline(stream,line);
     vector<string> line_array = {};
-    char char_array[100];
-    for (unsigned int i = 0 ; i < line.size(); i++){
-      if(line[i] == delimiter){
-        std::string p = char_array;
-        std::cout << p << "\n";
-        if (p == uid){
-          return line_array[0];
-        }
-        line_array.push_back(p);
+    std::getline(stream,line);
+    std::istringstream linestream(line);
+    while(!linestream.eof()){
+      std::getline(linestream, data, delimiter);
+      line_array.push_back(data);
+      if (data == uid){
+        return line_array[0];
       }
-      char_array[i] = line[i];     
     }
     i++;
   }
-  
   return "0";
 }
 
 // TODO: Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }
+//long LinuxParser::UpTime(int pid[[maybe_unused]]) { return 0; }

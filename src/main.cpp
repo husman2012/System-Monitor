@@ -5,6 +5,5 @@
 
 int main() {
   System system;
-  std::cout<<system.Processes()[0].User();
-  //NCursesDisplay::Display(system);
+  NCursesDisplay::Display(system);
 }

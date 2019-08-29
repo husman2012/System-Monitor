@@ -21,7 +21,7 @@ float Process::CpuUtilization() {
   string directory = std::to_string(pid_);
   vector<float> cpu_utils = Parse_CPU_Util(directory);
   float util = Calc_Utilization(cpu_utils);
- 
+  cpu_util = util;
   return util;
 }
 
@@ -45,11 +45,23 @@ string Process::User() {
   return user; }
 
 // TODO: Return the age of this process (in seconds)
-long int Process::UpTime() { return 0; }
+long int Process::UpTime() {
+  string pid = std::to_string(pid_);
+  vector<float> time_array = Parse_CPU_Util(pid);
+  
+  float starttime = time_array[4];
+  auto Hertz = sysconf(_SC_CLK_TCK);
+  long int time_s = starttime/Hertz;
+  long int sys_time = System::UpTime();
+  long int up_time = sys_time - time_s;
+  return up_time;
+}
 
 // TODO: Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a[[maybe_unused]]) const { return true; }
+bool Process::operator<(Process const& a) const {
+  return cpu_util > a.cpu_util;
+  }
 
 void Process::Pid(int pid){
   pid_ = pid;
